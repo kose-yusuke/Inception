@@ -1,2 +1,5 @@
 .vscode
 web
+wp*
+database
+.env
