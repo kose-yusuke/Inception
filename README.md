@@ -10,3 +10,11 @@
 - コンテナはクラッシュした場合に再起動する必要がある
 - docker-compose.ymlファイルにnetwork行がなければならない
 - 管理者のユーザー名にadmin/Adminやadministrator/Administratorを含めることはできない（例：admin、administrator、Administrator、admin-123など）
+
+## Bonus
+- 追加サービスごとにDockerfileを記述する必要がある
+- WordPressウェブサイトのキャッシュを適切に管理するために、redisキャッシュをセットアップする
+- WordPressウェブサイトのボリュームを指すFTPサーバー・コンテナをセットアップする
+- PHP以外の好みの言語で、シンプルな静的ウェブサイトを作成する
+- 例えば、ショーケースのサイトや履歴書を紹介するサイトなど
+- Set up Adminer
