@@ -14,18 +14,26 @@ else
 fi
 
 if [ ! -f wp-config.php ]; then
-  ./wp-cli.phar config create \
-    --dbname="$DB_NAME" \
-    --dbuser="$DB_USER" \
-    --dbpass="$DB_PASS" \
-    --dbhost="$DB_HOST" \
-    --allow-root
-else
-  echo "wp-config.php already exists. Skipping config creation."
+  if [ -d wp-admin ] && [ -f wp-includes/version.php ]; then
+    echo "WordPress file already exist. Skipping core download"
+  else
+    ./wp-cli.phar core download --allow-root
+  fi
+
+  if [ ! -f wp-config.php ]; then
+    ./wp-cli.phar config create \
+      --dbname="$DB_NAME" \
+      --dbuser="$DB_USER" \
+      --dbpass="$DB_PASS" \
+      --dbhost="$DB_HOST" \
+      --allow-root
+  else
+    echo "wp-config.php already exists. Skipping config creation."
+  fi
 fi
 
 if ! ./wp-cli.phar core is-installed --allow-root; then
-  ./wp-cli.phar core install --url=localhost --title=inception --admin_user="$ADMIN_USER" --admin_password="$ADMIN_PASSWORD" --admin_email="$ADMIN_EMAIL" --allow-root
+  ./wp-cli.phar core install --url="$DOMAIN_NAME" --title=inception --admin_user="$ADMIN_USER" --admin_password="$ADMIN_PASSWORD" --admin_email="$ADMIN_EMAIL" --allow-root
 else
   echo "WordPress is already installed. Skipping core installation."
 fi

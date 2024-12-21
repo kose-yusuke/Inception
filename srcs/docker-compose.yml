@@ -10,7 +10,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ./web:/var/www/html
+      - /Users/koseki.yusuke/ykoseki/data/nginx:/var/www/html
     networks:
       inception:
   wordpress:
@@ -24,12 +24,12 @@ services:
     secrets:
       - credentials
     volumes:
-      - ./web:/var/www/html
+      - /Users/koseki.yusuke/ykoseki/data/wordpress:/var/www/html
     environment:
+      - DOMAIN_NAME
       - WORDPRESS_REDIS_HOST=redis
     networks:
       inception:
-  
   mariadb:
     build :
       context: ./requirements/mariadb
@@ -44,7 +44,7 @@ services:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
       MYSQL_PASSWORD_FILE: /run/secrets/db_password
     volumes:
-      - ./database:/var/lib/mysql
+      - /Users/koseki.yusuke/ykoseki/data/mariadb:/var/lib/mysql
       - ./requirements/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
         test: ["CMD", "mysqladmin", "ping", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
@@ -71,7 +71,7 @@ services:
     image: redis:alpine
     container_name: redis
     ports:
-      - "6379:6379"
+      - "6380:6379"
     networks:
       inception:
 
@@ -84,7 +84,7 @@ services:
       - "21:21"
       - "21000-21010:21000-21010"
     volumes:
-      - ./web:/var/www/html
+      - /Users/koseki.yusuke/ykoseki/data/wordpress:/var/www/html
     networks:
       inception:
 
