@@ -4,3 +4,4 @@ wp*
 database
 .env
 .DS_Store
+secrets*
