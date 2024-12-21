@@ -4,4 +4,8 @@ wp*
 database
 .env
 .DS_Store
-secrets*
+secrets
+crt.pem
+csr.pem
+privkey.pem
+passwd.txt

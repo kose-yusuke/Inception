@@ -3,11 +3,12 @@ SRCS_PATH = ./srcs
 MARIADB_PATH = ./srcs/requirements/mariadb
 NGINX_PATH = ./srcs/requirements/nginx
 WORDPRESS_PATH = ./srcs/requirements/wordpress
+STACK_NAME = inception
 
 all: build up
 
 build :
-	docker compose -f $(DOCKER_COMPOSE_YML) build --no-cache
+	docker compose -f $(DOCKER_COMPOSE_YML) build
 
 up :
 	docker compose -f $(DOCKER_COMPOSE_YML) up -d --build
@@ -18,14 +19,24 @@ down :
 stop :
 	docker compose -f $(DOCKER_COMPOSE_YML) stop
 
-re : down build up
+swarm :
+	docker swarm init
 
-# clean:
-# 	@docker stop $$(docker ps -qa);\
-# 	docker container rm $$(docker ps -qa);\
-# 	docker image rm -f $$(docker images -qa);\
-# 	docker volume rm $$(docker volume ls -q);\
-# 	docker network rm $$(docker network ls -q);\
+secret :
+	@if docker secret ls | grep -q "credentials"; then \
+		docker secret rm credentials; \
+	fi
+	@if docker secret ls | grep -q "db_password"; then \
+		docker secret rm db_password; \
+	fi
+	@if docker secret ls | grep -q "db_root_password"; then \
+		docker secret rm db_root_password; \
+	fi
+	docker secret create credentials ./srcs/secrets/credentials.txt
+	docker secret create db_password ./srcs/secrets/db_password.txt
+	docker secret create db_root_password ./srcs/secrets/db_root_password.txt
+
+re : down build up secret
 
 clean:
 	@docker stop $$(docker ps -qa);\
@@ -36,6 +47,8 @@ clean:
 #volumeはpruneを使えば永続化データを保持できるらしい
 
 ps :
+	@docker secret ls
+	@echo "----------------------------------------"
 	@docker container ls -a
 	@echo "----------------------------------------"
 	@docker image ls -a
@@ -48,7 +61,7 @@ nginx :
 	docker exec -it nginx /bin/bash
 
 wordpress :
-	docker exec -it wordpress /bin/bash
+	docker exec -it wp-php /bin/bash
 
 mariadb :
 	docker exec -it mariadb /bin/bash

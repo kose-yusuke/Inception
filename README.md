@@ -1,5 +1,12 @@
 ## Inception
 
+## Usage
+(初回のみ)
+make swarm
+make secret
+(通常時)
+make
+
 ## 要件
 - NGINX（TLSv1.2またはTLSv1.3のみ）を含むDockerコンテナ 
 - nginxを含まないWordPress + php-fpm（インストールと設定が必要）のみを含むDockerコンテナ 
