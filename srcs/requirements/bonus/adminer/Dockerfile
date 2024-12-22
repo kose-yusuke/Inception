@@ -1,1 +1,1 @@
-FROM adminer:latest
+FROM adminer:4.8.1
