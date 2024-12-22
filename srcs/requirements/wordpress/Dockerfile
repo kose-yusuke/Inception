@@ -5,7 +5,9 @@ RUN apt update && apt upgrade -y && apt install -y php-fpm \
     curl \
     mariadb-client
 
-COPY conf/www.conf /etc/php/8.2/fpm/pool.d/.
+RUN mkdir -p /run/php
+
+COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 COPY tools/script.sh .
 RUN chmod +x /script.sh
 RUN mkdir -p /run/secrets

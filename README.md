@@ -1,5 +1,5 @@
 ## Inception
-Nginx, Mariadb, Wordpress(wp-php)をDockerで構築してWordpressサイトを表示する.
+Nginx, Mariadb, WordpressをDockerで構築してWordpressサイトを表示する.
 
 ## Usage
 (初回のみ)

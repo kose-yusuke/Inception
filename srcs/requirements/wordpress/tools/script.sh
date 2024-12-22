@@ -2,6 +2,17 @@
 
 set -eux
 
+wait_for_mariadb() {
+    until mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" -e "SELECT 1" &> /dev/null
+    do
+        echo "Waiting for MariaDB..."
+        sleep 2
+    done
+    echo "MariaDB is up and running."
+}
+
+mkdir -p /run/php
+
 cd /var/www/html
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
@@ -12,6 +23,8 @@ else
   echo "Error: /run/secrets/credentials not found"
   exit 1
 fi
+
+wait_for_mariadb
 
 if [ ! -f wp-config.php ]; then
   if [ -d wp-admin ] && [ -f wp-includes/version.php ]; then
@@ -48,4 +61,4 @@ else
   echo "User $USER_NAME already exists. Skipping user creation."
 fi
 
-php-fpm8.2 -F
+php-fpm7.4 -F

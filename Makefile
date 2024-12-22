@@ -3,7 +3,6 @@ SRCS_PATH = ./srcs
 MARIADB_PATH = ./srcs/requirements/mariadb
 NGINX_PATH = ./srcs/requirements/nginx
 WORDPRESS_PATH = ./srcs/requirements/wordpress
-STACK_NAME = inception
 
 all: build up
 
@@ -61,9 +60,13 @@ nginx :
 	docker exec -it nginx /bin/bash
 
 wordpress :
-	docker exec -it wp-php /bin/bash
+	docker exec -it wordpress /bin/bash
 
 mariadb :
 	docker exec -it mariadb /bin/bash
+
+redis :
+	docker exec -it redis redis-cli -p 6379 ping
+
 
 .PHONY: all build up down re clean ps nginx wordpress mariadb 
