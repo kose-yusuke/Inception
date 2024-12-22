@@ -1,4 +1,5 @@
 ## Inception
+Nginx, Mariadb, Wordpress(wp-php)をDockerで構築してWordpressサイトを表示する.
 
 ## Usage
 (初回のみ)
@@ -6,6 +7,17 @@ make swarm
 make secret
 (通常時)
 make
+
+## Wordpressの所在
+https://localhost
+https://127.0.0.1
+https://ykoseki.42.fr
+
+## Adminer
+http://localhost:8080/
+
+## Macなので, volumeは以下
+/Users/koseki.yusuke/ykoseki/data
 
 ## 要件
 - NGINX（TLSv1.2またはTLSv1.3のみ）を含むDockerコンテナ 
