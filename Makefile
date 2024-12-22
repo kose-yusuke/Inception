@@ -8,7 +8,7 @@ STACK_NAME = inception
 all: build up
 
 build :
-	docker compose -f $(DOCKER_COMPOSE_YML) build
+	docker compose -f $(DOCKER_COMPOSE_YML) build 
 
 up :
 	docker compose -f $(DOCKER_COMPOSE_YML) up -d --build

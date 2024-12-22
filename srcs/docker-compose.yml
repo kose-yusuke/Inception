@@ -10,7 +10,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - /Users/koseki.yusuke/ykoseki/data/nginx:/var/www/html
+      - /Users/koseki.yusuke/ykoseki/data/wordpress:/var/www/html
     networks:
       inception:
   wordpress:
@@ -26,7 +26,6 @@ services:
     volumes:
       - /Users/koseki.yusuke/ykoseki/data/wordpress:/var/www/html
     environment:
-      - DOMAIN_NAME
       - WORDPRESS_REDIS_HOST=redis
     networks:
       inception:

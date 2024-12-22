@@ -33,9 +33,13 @@ if [ ! -f wp-config.php ]; then
 fi
 
 if ! ./wp-cli.phar core is-installed --allow-root; then
-  ./wp-cli.phar core install --url="$DOMAIN_NAME" --title=inception --admin_user="$ADMIN_USER" --admin_password="$ADMIN_PASSWORD" --admin_email="$ADMIN_EMAIL" --allow-root
+  ./wp-cli.phar core install --url=ykoseki.42.fr --title=inception --admin_user="$ADMIN_USER" --admin_password="$ADMIN_PASSWORD" --admin_email="$ADMIN_EMAIL" --allow-root
+  ./wp-cli.phar option update siteurl "https://ykoseki.42.fr" --allow-root
+  ./wp-cli.phar option update home "https://ykoseki.42.fr" --allow-root
 else
   echo "WordPress is already installed. Skipping core installation."
+  ./wp-cli.phar option update siteurl "https://ykoseki.42.fr" --allow-root
+  ./wp-cli.phar option update home "https://ykoseki.42.fr" --allow-root
 fi
 
 if ! ./wp-cli.phar user get "$USER_NAME" --allow-root > /dev/null 2>&1; then
