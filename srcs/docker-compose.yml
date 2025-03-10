@@ -11,7 +11,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - /Users/koseki.yusuke/ykoseki/data/wordpress:/var/www/html
+      - wordpress:/var/www/html
     networks:
       inception:
   wordpress:
@@ -26,7 +26,7 @@ services:
     secrets:
       - credentials
     volumes:
-      - /Users/koseki.yusuke/ykoseki/data/wordpress:/var/www/html
+      - wordpress:/var/www/html
     environment:
       - WORDPRESS_REDIS_HOST=redis
     networks:
@@ -46,10 +46,10 @@ services:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
       MYSQL_PASSWORD_FILE: /run/secrets/db_password
     volumes:
-      - /Users/koseki.yusuke/ykoseki/data/mariadb:/var/lib/mysql
+      - mariadb:/var/lib/mysql
       - ./requirements/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-        test: ["CMD", "mysqladmin", "ping", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+        test: ["CMD", "sh", "-c","mysql -u${MYSQL_USER} -p$(cat /run/secrets/db_password) -e 'use ${MYSQL_DATABASE}'"]
         interval: 10s
         timeout: 5s
         retries: 5
@@ -90,7 +90,7 @@ services:
       - "21:21"
       - "21000-21010:21000-21010"
     volumes:
-      - /Users/koseki.yusuke/ykoseki/data/wordpress:/var/www/html
+      - wordpress:/var/www/html
     networks:
       inception:
 
@@ -104,3 +104,17 @@ secrets:
       file: ./secrets/db_root_password.txt
     credentials:
       file: ./secrets/credentials.txt
+
+volumes:
+  mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      device: /Users/koseki.yusuke/ykoseki/data/mariadb
+      o: bind
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      device: /Users/koseki.yusuke/ykoseki/data/wordpress
+      o: bind
